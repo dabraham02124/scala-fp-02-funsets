@@ -110,5 +110,46 @@ class FunSetSuite extends FunSuite {
     }
   }
 
+    test("forall") {
+    new TestSets {
+      val s = union(s1, s2)
+      assert(forall(s, x => x < 3), "contains 1")
+      assert(forall(s, x => x == 1 || x == 2), "contains 2")
+      
+      assert(forall(s, x => x == 3) == false, "! all 3")
+      assert(forall(s, x => x == 1) == false, "! all 1")
+    }
+  }
+
+  test("exists contains all elements of each set") {
+    new TestSets {
+      val s = union(s1, s2)
+      assert(exists(s, x => x == 1), "contains 1")
+      assert(exists(s, x => x == 2), "contains 2")
+      
+      assert(exists(s, x => x == 3) == false, "!contains 3")
+      assert(exists(s, x => x == 4) == false, "!contains 4")
+    }
+  }
+
+    test("mapping") {
+    new TestSets {
+      val s = union(s1, s2)
+      val sp :  Set = map(s, x => x*2)
+      val sp2 : Set = elem => exists(s, x => x*2 == elem)
+
+      assert(contains(sp2, 2), "doubled contains 2")
+      assert(contains(sp2, 4), "doubled contains 4")
+      
+      assert(contains(sp2, 317) == false, "doubled ! contains 317")
+      
+      assert(contains(sp2, 1) == false, "doubled ! contains 1")
+      assert(contains(sp2, 3) == false, "doubled ! contains 3")
+      assert(contains(sp2, 5) == false, "doubled ! contains 5")
+      assert(contains(sp2, 6) == false, "doubled ! contains 6")
+      assert(contains(sp2, 8) == false, "doubled ! contains 8")
+    }
+  }
+
 
 }
